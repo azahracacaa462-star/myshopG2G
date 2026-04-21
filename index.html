@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>G2G Skincare Shop</title>
+
+<style>
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#fff5f8;
+    margin:0;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:#ffe3ec;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header h1{
+    color:#e75480;
+    margin:0;
+}
+
+.menu{
+    display:flex;
+    align-items:center;
+}
+
+.menu button{
+    margin-left:10px;
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    background:#f7a1bb;
+    color:white;
+    cursor:pointer;
+}
+
+/* CART BUTTON */
+.cart-btn{
+    margin-left:15px;
+    background:#e75480;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.cart-btn span{
+    background:white;
+    color:#e75480;
+    padding:2px 8px;
+    border-radius:50%;
+    margin-left:5px;
+}
+
+/* BANNER */
+.banner img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+/* JUDUL */
+.judul{
+    text-align:center;
+    color:#e75480;
+    margin:20px;
+}
+
+/* SEARCH */
+.search-box{
+    text-align:center;
+    margin:20px;
+}
+
+.search-box input{
+    width:60%;
+    padding:12px;
+    border-radius:25px;
+    border:1px solid #f3b6c8;
+}
+
+/* KATEGORI */
+.kategori{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.kategori button{
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    background:#ffe3ec;
+    color:#e75480;
+    cursor:pointer;
+}
+
+/* PRODUK */
+.produk{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    width:200px;
+    padding:15px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+    width:100%;
+    height:140px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.card h3{
+    color:#e75480;
+}
+
+button{
+    margin-top:8px;
+    padding:8px;
+    border:none;
+    border-radius:20px;
+    background:#f7a1bb;
+    color:white;
+    cursor:pointer;
+}
+
+/* CART POPUP */
+.popup-cart{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:999;
+}
+
+.popup-content{
+    background:white;
+    width:90%;
+    margin:50px auto;
+    padding:20px;
+    border-radius:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #f3b6c8;
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background:#ffe3ec;
+}
+
+/* NOTIF POPUP */
+.notif{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#4CAF50;
+    color:white;
+    padding:12px 15px;
+    border-radius:8px;
+    font-size:14px;
+    display:none;
+    z-index:9999;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>🌸 G2G SKINCARE</h1>
+
+    <div class="menu">
+        <button onclick="window.scrollTo(0,0)">Home</button>
+        <button onclick="filterKategori('all')">All Item</button>
+
+        <div class="cart-btn" onclick="openCart()">
+            🛒 <span id="cartCount">0</span>
+        </div>
+    </div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+    <img src="banner.jpg">
+</div>
+
+<h2 class="judul">✨ Produk Skincare Terbaik ✨</h2>
+
+<!-- SEARCH -->
+<div class="search-box">
+<input type="text" id="search" placeholder="Cari produk..." onkeyup="cariProduk()">
+</div>
+
+<!-- KATEGORI -->
+<div class="kategori">
+    <button onclick="filterKategori('serum')">Serum</button>
+    <button onclick="filterKategori('moisturizer')">Moisturizer</button>
+    <button onclick="filterKategori('micellar')">Micellar</button>
+    <button onclick="filterKategori('lip')">Lip</button>
+    <button onclick="filterKategori('day')">Day Cream</button>
+    <button onclick="filterKategori('masker')">Masker</button>
+</div>
+
+<!-- PRODUK -->
+<div class="produk">
+
+<div class="card" data-kategori="serum" data-nama="serum">
+<img src="ser.jpg"><h3>Serum</h3><p>Rp 75.000</p>
+<button onclick="tambahProduk('Serum',75000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum',75000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="moisturizer" data-nama="moisturizer">
+<img src="moiss.jpg"><h3>Moisturizer</h3><p>Rp 40.000</p>
+<button onclick="tambahProduk('Moisturizer',40000)">+ Keranjang</button>
+<button onclick="beliSekarang('Moisturizer',40000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="micellar" data-nama="micellar water">
+<img src="mw.jpg"><h3>Micellar Water</h3><p>Rp 40.000</p>
+<button onclick="tambahProduk('Micellar Water',40000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Water',40000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="day" data-nama="day cream">
+<img src="blu.jpg"><h3>blueberry day cream</h3><p>Rp 70.000</p>
+<button onclick="tambahProduk('Day Cream',70000)">+ Keranjang</button>
+<button onclick="beliSekarang('Day Cream',70000)">Beli</button>
+</div>
+
+<!-- TAMBAHAN (TETAP AMAN) -->
+<div class="card" data-kategori="masker" data-nama="masker wajah">
+<img src="m1.jpg"><h3>Pomegranate Masker</h3><p>Rp 30.000</p>
+<button onclick="tambahProduk('Masker Wajah',30000)">+ Keranjang</button>
+<button onclick="beliSekarang('Masker Wajah',30000)">Beli</button>
+</div>
+
+<!-- TAMBAHAN PRODUK BARU -->
+
+<!-- ===== SERUM TAMBAHAN ===== -->
+<div class="card" data-kategori="serum" data-nama="serum brightening">
+<img src="pe.jpg"><h3>peeling Serum</h3><p>Rp 80.000</p>
+<button onclick="tambahProduk('Serum Brightening',80000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum Brightening',80000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="serum" data-nama="serum acne">
+<img src="cen.jpg"><h3>centella Serum</h3><p>Rp 78.000</p>
+<button onclick="tambahProduk('Serum Acne',78000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum Acne',78000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="serum" data-nama="serum glow">
+<img src="reti.jpg"><h3>retinol serum</h3><p>Rp 82.000</p>
+<button onclick="tambahProduk('Serum Glow',82000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum Glow',82000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="serum" data-nama="serum hydrating">
+<img src="vita.jpg"><h3>vita-c serum</h3><p>Rp 76.000</p>
+<button onclick="tambahProduk('Serum Hydrating',76000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum Hydrating',76000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="serum" data-nama="serum anti aging">
+<img src="white.jpg"><h3>symwwhite serum</h3><p>Rp 90.000</p>
+<button onclick="tambahProduk('Serum Anti Aging',90000)">+ Keranjang</button>
+<button onclick="beliSekarang('Serum Anti Aging',90000)">Beli</button>
+</div>
+
+<!-- ===== MASKER TAMBAHAN ===== -->
+<div class="card" data-kategori="masker" data-nama="masker green tea">
+<img src="m2.jpg"><h3>MugwortMasker</h3><p>Rp 32.000</p>
+<button onclick="tambahProduk('Masker Green Tea',32000)">+ Keranjang</button>
+<button onclick="beliSekarang('Masker Green Tea',32000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="masker" data-nama="masker charcoal">
+<img src="m3.jpg"><h3>Volcano Masker</h3><p>Rp 35.000</p>
+<button onclick="tambahProduk('Masker Charcoal',35000)">+ Keranjang</button>
+<button onclick="beliSekarang('Masker Charcoal',35000)">Beli</button>
+</div>
+
+<!-- ===== DAY CREAM TAMBAHAN ===== -->
+<div class="card" data-kategori="day" data-nama="day cream glow">
+<img src="to.jpg"><h3>tone up Cream Glow</h3><p>Rp 75.000</p>
+<button onclick="tambahProduk('Day Cream Glow',75000)">+ Keranjang</button>
+<button onclick="beliSekarang('Day Cream Glow',75000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="day" data-nama="day cream bright">
+<img src="d.jpg"><h3>Day Cream Bright</h3><p>Rp 72.000</p>
+<button onclick="tambahProduk('Day Cream Bright',72000)">+ Keranjang</button>
+<button onclick="beliSekarang('Day Cream Bright',72000)">Beli</button>
+</div>
+
+<!-- ===== LIP TAMBAHAN ===== -->
+<div class="card" data-kategori="lip" data-nama="lip tint">
+<img src="l1.jpg"><h3>strawberry Lip Serum</h3><p>Rp 30.000</p>
+<button onclick="tambahProduk('Lip Tint',30000)">+ Keranjang</button>
+<button onclick="beliSekarang('Lip Tint',30000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="lip" data-nama="lip balm">
+<img src="l2.jpg"><h3>berry sodaLip Serum</h3><p>Rp 28.000</p>
+<button onclick="tambahProduk('Lip Balm',28000)">+ Keranjang</button>
+<button onclick="beliSekarang('Lip Balm',28000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="lip" data-nama="lip tint">
+<img src="l3.jpg"><h3>peach Lip Serum</h3><p>Rp 30.000</p>
+<button onclick="tambahProduk('Lip Tint',30000)">+ Keranjang</button>
+<button onclick="beliSekarang('Lip Tint',30000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="lip" data-nama="lip balm">
+<img src="l4.jpg"><h3>pearl Lip Serum</h3><p>Rp 30.000</p>
+<button onclick="tambahProduk('Lip Balm',28000)">+ Keranjang</button>
+<button onclick="beliSekarang('Lip Balm',28000)">Beli</button>
+</div>
+
+<!-- ===== MICELLAR TAMBAHAN ===== -->
+<div class="card" data-kategori="micellar" data-nama="micellar bright">
+<img src="mw5.jpg"><h3>Vita-c Micellar water</h3><p>Rp 42.000</p>
+<button onclick="tambahProduk('Micellar Bright',42000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Bright',42000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="micellar" data-nama="micellar bright">
+<img src="mw4.jpg"><h3>Anti-acne Micellar water</h3><p>Rp 42.000</p>
+<button onclick="tambahProduk('Micellar Bright',42000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Bright',42000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="micellar" data-nama="micellar bright">
+<img src="mw3.jpg"><h3>calming micellar water</h3><p>Rp 42.000</p>
+<button onclick="tambahProduk('Micellar Bright',42000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Bright',42000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="micellar" data-nama="micellar bright">
+<img src="mw2.jpg"><h3>Glowing Micellar water</h3><p>Rp 42.000</p>
+<button onclick="tambahProduk('Micellar Bright',42000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Bright',42000)">Beli</button>
+</div>
+
+<div class="card" data-kategori="micellar" data-nama="micellar bright">
+<img src="mw1.jpg"><h3>brightening Micellar water</h3><p>Rp 42.000</p>
+<button onclick="tambahProduk('Micellar Bright',42000)">+ Keranjang</button>
+<button onclick="beliSekarang('Micellar Bright',42000)">Beli</button>
+</div>
+
+<!-- ===== MOISTURIZER TAMBAHAN ===== -->
+<div class="card" data-kategori="moisturizer" data-nama="moisturizer glow">
+<img src="cente.jpg"><h3>centela Moisturizer</h3><p>Rp 45.000</p>
+<button onclick="tambahProduk('Moisturizer Glow',45000)">+ Keranjang</button>
+<button onclick="beliSekarang('Moisturizer Glow',45000)">Beli</button>
+</div>
+
+</div>
+
+<!-- CART POPUP -->
+<div class="popup-cart" id="cartPopup">
+<div class="popup-content">
+<h2>Keranjang</h2>
+
+<table>
+<tr><th>No</th><th>Nama</th><th>Harga</th><th>Jumlah</th><th>Total</th></tr>
+<tbody id="keranjang"></tbody>
+</table>
+
+<br>
+<button onclick="checkoutWA()">Checkout WA</button>
+<button onclick="closeCart()">Tutup</button>
+</div>
+</div>
+
+<!-- NOTIF -->
+<div id="notif" class="notif">✔ Produk ditambahkan ke keranjang</div>
+
+<div style="position:fixed; bottom:5px; right:10px; font-size:10px; opacity:0.2;">
+a
+</div>
+
+<script>
+let no = 1;
+let cartCount = 0;
+
+function filterKategori(k){
+ document.querySelectorAll('.card').forEach(c=>{
+  c.style.display = (k==='all'||c.dataset.kategori===k) ? 'block':'none';
+ });
+}
+
+function tambahProduk(nama,harga){
+ let table = document.getElementById("keranjang");
+
+ let r = table.insertRow();
+ r.insertCell(0).innerText = no++;
+ r.insertCell(1).innerText = nama;
+ r.insertCell(2).innerText = harga;
+ r.insertCell(3).innerHTML = '<input type="number" value="1" onchange="updateTotal(this)">';
+ r.insertCell(4).innerText = harga;
+
+ cartCount++;
+ document.getElementById('cartCount').innerText = cartCount;
+
+ showNotif();
+}
+
+function updateTotal(el){
+ let row = el.parentElement.parentElement;
+ let harga = row.cells[2].innerText;
+ let qty = el.value;
+ row.cells[4].innerText = harga * qty;
+}
+
+function openCart(){
+ document.getElementById("cartPopup").style.display = "block";
+}
+
+function closeCart(){
+ document.getElementById("cartPopup").style.display = "none";
+}
+
+function checkoutWA(){
+ let pesan="Order:%0A";
+ let rows = document.getElementById("keranjang").rows;
+
+ for(let r of rows){
+  let nama = r.cells[1].innerText;
+  let qty = r.cells[3].children[0].value;
+  let sub = r.cells[4].innerText;
+  pesan += `${nama} x${qty} = Rp ${sub}%0A`;
+ }
+
+ window.open("https://wa.me/6289525545799?text="+pesan);
+}
+
+function beliSekarang(nama,harga){
+ window.open(`https://wa.me/6289525545799?text=Order ${nama} Rp ${harga}`);
+}
+
+function cariProduk(){
+ let key = document.getElementById("search").value.toLowerCase();
+
+ document.querySelectorAll(".card").forEach(p=>{
+  let nama = p.dataset.nama.toLowerCase();
+  p.style.display = nama.includes(key) ? "block":"none";
+ });
+}
+
+function showNotif(){
+ let n = document.getElementById("notif");
+ n.style.display = "block";
+ setTimeout(()=>{ n.style.display="none"; }, 2000);
+}
+
+function cariProduk(){
+ let key = document.getElementById("search").value.toLowerCase();
+
+ document.querySelectorAll(".card").forEach(p=>{
+  let nama = p.dataset.nama.toLowerCase();
+  let kategori = p.dataset.kategori.toLowerCase();
+
+  p.style.display = (nama.includes(key) || kategori.includes(key)) 
+  ? "block":"none";
+ });
+}
+</script>
+
+</body>
+</html>
