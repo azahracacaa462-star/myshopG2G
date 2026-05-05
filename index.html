@@ -51,7 +51,7 @@
     transform: scale(1.1);
 }
 
-/* CSS TOKO (TETAP SAMA) */
+/* CSS TOKO */
 body{
     font-family:'Segoe UI',sans-serif;
     background:#fff5f8;
@@ -126,7 +126,7 @@ body{
 }
 
 .banner-track img {
-    width: 100vw; /* Setiap gambar memenuhi lebar layar */
+    width: 100vw;
     height: 350px;
     object-fit: cover;
 }
@@ -340,6 +340,7 @@ th{
 </div>
 
 <div class="produk">
+    <!-- List Produk Tetap Sama -->
     <div class="card" data-kategori="serum" data-nama="serum" onclick="bacaDeskripsi('Serum', 'Serum nutrisi mendalam.', 75000, 'ser.jpg')">
     <img src="ser.jpg"><h3>Serum</h3><p>Rp 75.000</p>
     <button onclick="event.stopPropagation(); tambahProduk('Serum',75000)">+ Keranjang</button>
@@ -512,7 +513,6 @@ th{
 <div id="notif" class="notif">✔ Produk ditambahkan ke keranjang</div>
 
 <script>
-// FUNGSI UNTUK WELCOME SCREEN
 function masukToko() {
     document.getElementById("welcome-screen").style.opacity = "0";
     setTimeout(() => {
@@ -598,10 +598,12 @@ function beliSekarang(nama,harga){
  window.open(`https://wa.me/6289525545799?text=Halo SAYUPSA SHOP, saya ingin beli ${nama} seharga Rp ${harga}`);
 }
 
+// PERBAIKAN PADA BAGIAN INI
 function cariProduk(){
  let key = document.getElementById("search").value.toLowerCase();
- document.querySelectorAll(".card").forEac(p=>{let match = p.dataset.nama.includes(key) || p.dataset.kategori.includes(key);
-  p.style.display = match ? "block":"none";
+ document.querySelectorAll(".card").forEach(p => {
+  let match = p.dataset.nama.includes(key) || p.dataset.kategori.includes(key);
+  p.style.display = match ? "block" : "none";
  });
 }
 
@@ -613,4 +615,4 @@ function showNotif(){
 </script>
 
 </body>
-</html>}
+</html>s
